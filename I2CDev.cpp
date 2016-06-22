@@ -13,8 +13,8 @@
 #include <sys/ioctl.h>
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
-
 #include "I2CDev.h"
+
 using namespace std;
 
 #define HEX(x) setw(2) << setfill('0') << hex << (int)(x)
@@ -92,7 +92,7 @@ int I2CDev::writeValue(unsigned char value){
  * Return the byte value at the register address.
  */
 unsigned char I2CDev::readRegister(unsigned int registerAddress){
-   this->write(registerAddress);
+   this->writeValue(registerAddress);
    unsigned char buffer[1];
    if(::read(this->file, buffer, 1)!=1){
       perror("I2C: Failed to read in the value.\n");
@@ -110,7 +110,7 @@ unsigned char I2CDev::readRegister(unsigned int registerAddress){
  * Return a pointer of type unsigned char* that points to the first element in the block of registers
  */
 unsigned char* I2CDev::readMultiRegister(unsigned int number, unsigned int fromAddress){
-	this->write(fromAddress);
+	this->writeValue(fromAddress);
 	unsigned char* data = new unsigned char[number];
     if(::read(this->file, data, number)!=(int)number){
        perror("IC2: Failed to read in the full buffer.\n");
