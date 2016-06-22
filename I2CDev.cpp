@@ -35,12 +35,11 @@ I2CDev::I2CDev(unsigned int bus, unsigned int device) {
 
 /**
  * Open a connection to an I2C device
- * @return 1 on failure to open to the bus or device, 0 on success.
+ * return 1 on failure to open to the bus or device, 0 on success.
  */
 int I2CDev::open(){
    string name;
-   if(this->bus==0) name = RPI_I2C_1;
-   else name = BBB_I2C_1;
+   if(this->bus == 1) name = RPI_I2C_1;
 
    if((this->file=::open(name.c_str(), O_RDWR)) < 0){
       perror("I2C: failed to open the bus\n");
@@ -55,12 +54,12 @@ int I2CDev::open(){
 
 /**
  * Write a single byte value to a single register.
- * @param registerAddress The register address
- * @param value The value to be written to the register
- * @return 1 on failure to write, 0 on success.
+ * Parameter registerAddress: The register address
+ * Parameter value: The value to be written to the register
+ * Return 1 on failure to write, 0 on success.
  */
 
-int I2CDevice::writeRegister(unsigned int registerAddress, unsigned char value){
+int I2CDev::writeRegister(unsigned int registerAddress, unsigned char value){
    unsigned char buffer[2];
    buffer[0] = registerAddress;
    buffer[1] = value;
@@ -74,10 +73,10 @@ int I2CDevice::writeRegister(unsigned int registerAddress, unsigned char value){
 /**
  * Write a single value to the I2C device. Used to set up the device to read from a
  * particular address.
- * @param value the value to write to the device
- * @return 1 on failure to write, 0 on success.
+ * Parameter value: the value to write to the device
+ * Return 1 on failure to write, 0 on success.
  */
-int I2CDevice::write(unsigned char value){
+int I2CDev::writeValue(unsigned char value){
    unsigned char buffer[1];
    buffer[0]=value;
    if (::write(this->file, buffer, 1)!=1){
@@ -89,10 +88,10 @@ int I2CDevice::write(unsigned char value){
 
 /**
  * Read a single register value from the address on the device.
- * @param registerAddress the address to read from
- * @return the byte value at the register address.
+ * Parameter registerAddress: the address to read from
+ * Return the byte value at the register address.
  */
-unsigned char I2CDevice::readRegister(unsigned int registerAddress){
+unsigned char I2CDev::readRegister(unsigned int registerAddress){
    this->write(registerAddress);
    unsigned char buffer[1];
    if(::read(this->file, buffer, 1)!=1){
@@ -106,11 +105,11 @@ unsigned char I2CDevice::readRegister(unsigned int registerAddress){
  * Method to read a number of registers from a single device. This is much more efficient than
  * reading the registers individually. The from address is the starting address to read from, which
  * defaults to 0x00.
- * @param number the number of registers to read from the device
- * @param fromAddress the starting address to read from
- * @return a pointer of type unsigned char* that points to the first element in the block of registers
+ * Parameter number: the number of registers to read from the device
+ * Parameter fromAddress: the starting address to read from
+ * Return a pointer of type unsigned char* that points to the first element in the block of registers
  */
-unsigned char* I2CDevice::readRegisters(unsigned int number, unsigned int fromAddress){
+unsigned char* I2CDev::readMultiRegister(unsigned int number, unsigned int fromAddress){
 	this->write(fromAddress);
 	unsigned char* data = new unsigned char[number];
     if(::read(this->file, data, number)!=(int)number){
@@ -125,12 +124,12 @@ unsigned char* I2CDevice::readRegisters(unsigned int number, unsigned int fromAd
  * 16 values and displays the results in hexadecimal to give a standard output using the HEX() macro
  * that is defined at the top of this file. The standard output will stay in hexadecimal format, hence
  * the call on the last like.
- * @param number the total number of registers to dump, defaults to 0xff
+ * Parameter number: the total number of registers to dump, defaults to 0xff
  */
 
-void I2CDevice::debugDumpRegisters(unsigned int number){
+void I2CDev::debugDumpRegisters(unsigned int number){
 	cout << "Dumping Registers for Debug Purposes:" << endl;
-	unsigned char *registers = this->readRegisters(number);
+	unsigned char *registers = this->readMultiRegister(number);
 	for(int i=0; i<(int)number; i++){
 		cout << HEX(*(registers+i)) << " ";
 		if (i%16==15) cout << endl;
@@ -139,9 +138,9 @@ void I2CDevice::debugDumpRegisters(unsigned int number){
 }
 
 /**
- * Close the file handles and sets a temporary state to -1.
+ * Close the file handlers and sets a temporary state to -1.
  */
-void I2CDevice::close(){
+void I2CDev::close(){
 	::close(this->file);
 	this->file = -1;
 }
@@ -149,8 +148,8 @@ void I2CDevice::close(){
 /**
  * Closes the file on destruction, provided that it has not already been closed.
  */
-I2CDevice::~I2CDevice() {
+I2CDev::~I2CDev() {
 	if(file!=-1) this->close();
 }
 
-} /* namespace exploringBB */
+} /* namespace RPII2C */

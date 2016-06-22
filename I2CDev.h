@@ -23,13 +23,13 @@ private:
 public:
 	I2CDev(unsigned int bus, unsigned int device);
 	virtual int open();
-	virtual int write(unsigned char value);
+	virtual int writeValue(unsigned char value);
 	virtual unsigned char readRegister(unsigned int registerAddress);
-	virtual unsigned char* readRegisters(unsigned int number, unsigned int fromAddress=0);
+	virtual unsigned char* readMultiRegister(unsigned int number, unsigned int fromAddress=0);
 	virtual int writeRegister(unsigned int registerAddress, unsigned char value);
 	virtual void debugDumpRegisters(unsigned int number = 0xff);
 	virtual void close();
-	virtual ~I2CDevice();
+	virtual ~I2CDev();
 };
 
 } /* namespace RPII2C */
