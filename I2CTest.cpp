@@ -12,12 +12,12 @@
 using namespace std;
 using namespace RPII2C;
 
-int main{
+int main(){
 //The address of BNO005 is 0x28
 	I2CDev sensor(1, 0x28);
 	sensor.open();
 //Read the device number
-	char Device = sensor.readRegister(0x00);
+	char* Device = sensor.readRegister(0x00);
 //Set the operation mode
 	sensor.writeRegister(0x3D, 0x1C);
 	
@@ -29,7 +29,7 @@ int main{
 	
 //Now print the results
 	cout << 'The default device value of BNO005 is: ' << Device << '\n';
-	cout << 'We get six Acceleration Data: ' <<  data << '\n';
+//	cout << 'We get six Acceleration Data: ' <<  data << '\n';
 	
 }
 
