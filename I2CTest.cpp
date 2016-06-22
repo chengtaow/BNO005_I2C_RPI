@@ -8,6 +8,9 @@
 #include <iostream>
 #include <unistd.h>
 #include "I2CDev.h"
+#include <iomanip>
+
+#define HEX(x) setw(2) << setfill('0') << hex << (int)(x)
 
 using namespace std;
 using namespace RPII2C;
@@ -17,19 +20,19 @@ int main(){
 	I2CDev sensor(1, 0x28);
 	sensor.open();
 //Read the device number
-	char *Device = sensor.readRegister(0x00);
+	char Device = sensor.readRegister(0x00);
 //Set the operation mode
 	sensor.writeRegister(0x3D, 0x1C);
 	
 //Now read 6 data from 0x08
 //These data will be Acceleration Data X <7:0>, X <15:8>, Y <7:0>, Y <15:8>,Z <7:0>, Z <15:8>.
-	char *data = sensor.readMultiRegister(6, 0x08);
+	unsigned char *data = sensor.readMultiRegister(6, 0x08);
 //Close connection
 	sensor.close();
 	
 //Now print the results
-	cout << "The default device value of BNO005 is: " << Device << '\n';
-//	cout << "We get six Acceleration Data: " <<  data << '\n';
+	cout << "The default device value of BNO005 is: " << HEX(Device) << '\n';
+	cout << "We get six Acceleration Data, print the first one: " << HEX(data[0]) << '\n';
 	
 }
 
