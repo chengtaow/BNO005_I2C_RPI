@@ -38,18 +38,18 @@ I2CDev::I2CDev(unsigned int bus, unsigned int device) {
  * return 1 on failure to open to the bus or device, 0 on success.
  */
 int I2CDev::open(){
-   string name;
-   if(this->bus == 1) name = RPI_I2C_1;
+	string name;
+	if(this->bus == 1) name = RPI_I2C_1;
 
-   if((this->file=::open(name.c_str(), O_RDWR)) < 0){
-      perror("I2C: failed to open the bus\n");
-	  return 1;
-   }
-   if(ioctl(this->file, I2C_SLAVE, this->device) < 0){
-      perror("I2C: Failed to connect to the device\n");
-	  return 1;
-   }
-   return 0;
+	if((this->file=::open(name.c_str(), O_RDWR)) < 0){
+		perror("I2C: failed to open the bus\n");
+		return 1;
+	}
+	if(ioctl(this->file, I2C_SLAVE, this->device) < 0){
+		perror("I2C: Failed to connect to the device\n");
+		return 1;
+	}
+	return 0;
 }
 
 /**
@@ -60,14 +60,14 @@ int I2CDev::open(){
  */
 
 int I2CDev::writeRegister(unsigned int registerAddress, unsigned char value){
-   unsigned char buffer[2];
-   buffer[0] = registerAddress;
-   buffer[1] = value;
-   if(::write(this->file, buffer, 2)!=2){
-      perror("I2C: Failed write to the device\n");
-      return 1;
-   }
-   return 0;
+	unsigned char buffer[2];
+	buffer[0] = registerAddress;
+	buffer[1] = value;
+	if(::write(this->file, buffer, 2)!=2){
+		perror("I2C: Failed write to the device\n");
+		return 1;
+	}
+	return 0;
 }
 
 /**
@@ -77,13 +77,13 @@ int I2CDev::writeRegister(unsigned int registerAddress, unsigned char value){
  * Return 1 on failure to write, 0 on success.
  */
 int I2CDev::writeValue(unsigned char value){
-   unsigned char buffer[1];
-   buffer[0]=value;
-   if (::write(this->file, buffer, 1)!=1){
-      perror("I2C: Failed to write to the device\n");
-      return 1;
-   }
-   return 0;
+	unsigned char buffer[1];
+	buffer[0]=value;
+	if (::write(this->file, buffer, 1)!=1){
+		perror("I2C: Failed to write to the device\n");
+		return 1;
+	}
+	return 0;
 }
 
 /**
@@ -92,13 +92,13 @@ int I2CDev::writeValue(unsigned char value){
  * Return the byte value at the register address.
  */
 unsigned char I2CDev::readRegister(unsigned int registerAddress){
-   this->writeValue(registerAddress);
-   unsigned char buffer[1];
-   if(::read(this->file, buffer, 1)!=1){
-      perror("I2C: Failed to read in the value.\n");
-      return 1;
-   }
-   return buffer[0];
+	this->writeValue(registerAddress);
+	unsigned char buffer[1];
+	if(::read(this->file, buffer, 1)!=1){
+		perror("I2C: Failed to read in the value.\n");
+		return 1;
+	}
+	return buffer[0];
 }
 
 /**
@@ -112,10 +112,10 @@ unsigned char I2CDev::readRegister(unsigned int registerAddress){
 unsigned char* I2CDev::readMultiRegister(unsigned int number, unsigned int fromAddress){
 	this->writeValue(fromAddress);
 	unsigned char* data = new unsigned char[number];
-    if(::read(this->file, data, number)!=(int)number){
-       perror("IC2: Failed to read in the full buffer.\n");
-	   return NULL;
-    }
+	if(::read(this->file, data, number)!=(int)number){
+		perror("IC2: Failed to read in the full buffer.\n");
+		return NULL;
+	}
 	return data;
 }
 
