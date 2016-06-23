@@ -62,7 +62,7 @@ BNO005::BNO005(unsigned int I2CBus, unsigned int I2CAddress):
 	this->Acceleration = NULL;
 	//this->Magnetometer = NULL;
 	//this->Gyroscope = NULL;
-	this->writeValue(OPRMODE,0x1C);
+	writeValue(OPRMODE,0x1C);
 }
 
 void BNO005::getMagnetometer(){
