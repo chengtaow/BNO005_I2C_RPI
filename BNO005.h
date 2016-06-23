@@ -17,17 +17,18 @@ class BNO005: protected I2CDEv{
 
 private:
 	unsigned int I2CBus, I2CAddress;
-	short acceX, acceY, acceZ;
+	//unsigned char *registers;
+	double *Acceleration;
+	//double* Magnetometer;
+	//double* Gyroscope;
 	short combineRegister(unsigned char msb, unsigned char lsb);
 	
 public:
 	BNO005(unsigned int I2CBus, unsigned int I2CAddress=0x28);
-	virtual int readSensorState();
-	virtual short getAccelerationX() { return accelerationX; }
-	virtual short getAccelerationY() { return accelerationY; }
-	virtual short getAccelerationZ() { return accelerationZ; }
-	virtual float getPitch() { return pitch; }
-	virtual float getRoll() { return roll; }
+	//virtual double *getAcceleration()
+	virtual void getMagnetometer()
+	//virtual double *getGyroscope()
+
 	virtual ~BNO005();
 	
 };
