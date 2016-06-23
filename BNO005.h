@@ -13,7 +13,7 @@
 
 namespace RPII2C{
 
-class BNO005: protected I2CDev{
+class BNO005:protected I2CDev{
 
 private:
 	unsigned int I2CBus, I2CAddress;

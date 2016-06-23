@@ -13,8 +13,6 @@ using namespace RPII2C;
 
 int main(){
 	BNO005 sensor(1);
-	sensor.open();
 	sensor.getMagnetometer();
 	return 0;
-	sensor.close();
 }
