@@ -16,4 +16,5 @@ int main(){
 	sensor.open();
 	sensor.getMagnetometer();
 	return 0;
+	sensor.close();
 }

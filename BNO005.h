@@ -13,7 +13,7 @@
 
 namespace RPII2C{
 
-class BNO005: protected I2CDEv{
+class BNO005: protected I2CDev{
 
 private:
 	unsigned int I2CBus, I2CAddress;
@@ -25,9 +25,9 @@ private:
 	
 public:
 	BNO005(unsigned int I2CBus, unsigned int I2CAddress=0x28);
-	//virtual double *getAcceleration()
-	virtual void getMagnetometer()
-	//virtual double *getGyroscope()
+	//virtual double *getAcceleration();
+	virtual void getMagnetometer();
+	//virtual double *getGyroscope();
 
 	virtual ~BNO005();
 	

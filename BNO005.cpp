@@ -62,7 +62,7 @@ BNO005::BNO005(unsigned int I2CBus, unsigned int I2CAddress):
 	this->Acceleration = NULL;
 	//this->Magnetometer = NULL;
 	//this->Gyroscope = NULL;
-	this->writeValue(OPRMODE,0x1c);
+	this->writeValue(OPRMODE,0x1C);
 }
 
 void BNO005::getMagnetometer(){
@@ -72,7 +72,7 @@ void BNO005::getMagnetometer(){
 	magdata[0] = (double)this->combineRegister(magvalue[1], magvalue[0])/16.0;
 	magdata[1] = (double)this->combineRegister(magvalue[3], magvalue[2])/16.0;
 	magdata[2] = (double)this->combineRegister(magvalue[5], magvalue[4])/16.0;
-	this->Acceleration = *magdata;
+	this->Acceleration = &magdata;
 	cout << "The Magnetometer value of BNO005 in X direction is: " << Acceleration[0] << '\n';
 	cout << "The Magnetometer value of BNO005 in Y direction is: " << Acceleration[1] << '\n';
 	cout << "The Magnetometer value of BNO005 in Z direction is: " << Acceleration[2] << '\n';
